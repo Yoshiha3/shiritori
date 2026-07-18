@@ -1,7 +1,9 @@
 import Router from "./router.js";
+import Shiritori from "./shiritori.js";
+
+const game = new Shiritori();
 
 const router = new Router();
-let previousWord = "しりとり";
 
 router.get("/shiritori", sendPreviousWord);
 router.post("/shiritori", handleNewWord);
@@ -9,6 +11,7 @@ router.post("/shiritori", handleNewWord);
 Deno.serve((req) => router.handle(req));
 
 function sendPreviousWord() {
+  const previousWord = game.getPreviousWord();
   return new Response(previousWord);
 }
 
@@ -16,13 +19,12 @@ async function handleNewWord(req) {
   const requestJson = await req.json();
   const nextWord = requestJson["nextWord"];
 
-  if (previousWord.slice(-1) === nextWord.slice(0, 1)) {
-    previousWord = nextWord;
-  } else {
+  const result = game.addNextWord(nextWord);
+
+  if (!result.ok) {
     return new Response(
       JSON.stringify({
-        "errorMessage": "前の単語に続いていません",
-        "errorCode": "10001",
+        "errorMessage": result.message,
       }),
       {
         status: 400,
@@ -31,5 +33,6 @@ async function handleNewWord(req) {
     );
   }
 
-  return new Response(previousWord);
+  const lastWord = game.getPreviousWord();
+  return new Response(lastWord);
 }
