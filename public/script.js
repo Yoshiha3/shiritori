@@ -1,8 +1,7 @@
 window.onload = async () => {
   try {
     const { previousWord } = await get("/shiritori");
-    const paragraph = document.querySelector("#previousWord");
-    paragraph.innerHTML = `前の単語: ${previousWord}`;
+    updatePreviousWord(previousWord);
   } catch (_e) {
     alert("通信エラーが発生しました。");
     return;
@@ -14,8 +13,7 @@ document.querySelector("#nextWordSendButton").onclick = async () => {
   const nextWordInputText = nextWordInput.value;
   try {
     const data = await post("/shiritori", { nextWord: nextWordInputText });
-    const paragraph = document.querySelector("#previousWord");
-    paragraph.innerHTML = `前の単語: ${data.previousWord}`;
+    updatePreviousWord(data.previousWord);
     nextWordInput.value = "";
   } catch (e) {
     if (e instanceof ApiError) {
@@ -26,6 +24,11 @@ document.querySelector("#nextWordSendButton").onclick = async () => {
     return;
   }
 };
+
+function updatePreviousWord(previousWord) {
+  const paragraph = document.querySelector("#previousWord");
+  paragraph.textContent = `前の単語: ${previousWord}`;
+}
 
 async function request(url, options = {}) {
   const response = await fetch(url, options);
