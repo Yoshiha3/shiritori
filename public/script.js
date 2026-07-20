@@ -12,8 +12,10 @@ document.querySelector("#nextWordSendButton").onclick = async () => {
   const nextWordInput = document.querySelector("#nextWordInput");
   const nextWordInputText = nextWordInput.value;
   try {
-    const data = await post("/shiritori", { nextWord: nextWordInputText });
-    updatePreviousWord(data.previousWord);
+    const { previousWord } = await post("/shiritori", {
+      nextWord: nextWordInputText,
+    });
+    updatePreviousWord(previousWord);
     nextWordInput.value = "";
   } catch (e) {
     if (e instanceof ApiError) {
