@@ -12,7 +12,7 @@ Deno.serve((req) => router.handle(req));
 
 function sendPreviousWord() {
   const previousWord = game.getPreviousWord();
-  return new Response(previousWord);
+  return Response.json({ previousWord });
 }
 
 async function handleNewWord(req) {
@@ -22,17 +22,16 @@ async function handleNewWord(req) {
   const result = game.addNextWord(nextWord);
 
   if (!result.ok) {
-    return new Response(
-      JSON.stringify({
+    return Response.json(
+      {
         "errorMessage": result.message,
-      }),
+      },
       {
         status: 400,
-        headers: { "Content-Type": "application/json; charset=UTF-8" },
       },
     );
   }
 
-  const lastWord = game.getPreviousWord();
-  return new Response(lastWord);
+  const previousWord = game.getPreviousWord();
+  return Response.json({ previousWord });
 }

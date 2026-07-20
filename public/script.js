@@ -1,6 +1,6 @@
 window.onload = async () => {
   const response = await fetch("/shiritori", { method: "GET" });
-  const previousWord = await response.text();
+  const { previousWord } = await response.json();
   const paragraph = document.querySelector("#previousWord");
   paragraph.innerHTML = `前の単語: ${previousWord}`;
 };
@@ -18,13 +18,12 @@ document.querySelector("#nextWordSendButton").onclick = async () => {
   );
 
   if (response.status !== 200) {
-    const errorJson = await response.text();
-    const errorObj = JSON.parse(errorJson);
+    const errorObj = await response.json();
     alert(errorObj["errorMessage"]);
     return;
   }
 
-  const previousWord = await response.text();
+  const { previousWord } = await response.json();
   const paragraph = document.querySelector("#previousWord");
   paragraph.innerHTML = `前の単語: ${previousWord}`;
   nextWordInput.value = "";
