@@ -1,4 +1,4 @@
-import { get, post } from "./api.js";
+import { ApiError, get, post } from "./api.js";
 
 window.onload = async () => {
   try {

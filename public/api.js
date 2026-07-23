@@ -10,7 +10,7 @@ async function request(url, options = {}) {
   return data;
 }
 
-class ApiError extends Error {
+export class ApiError extends Error {
   constructor(status, message) {
     super(message);
     this.status = status;
