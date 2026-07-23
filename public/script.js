@@ -5,7 +5,7 @@ window.onload = async () => {
     const { previousWord } = await get("/shiritori");
     updatePreviousWord(previousWord);
   } catch (_e) {
-    alert("通信エラーが発生しました。");
+    showError("通信エラーが発生しました。");
     return;
   }
 };
@@ -22,9 +22,9 @@ document.querySelector("#nextWordSendButton").onclick = async () => {
     nextWordInput.value = "";
   } catch (e) {
     if (e instanceof ApiError) {
-      alert(e.message);
+      showError(e.message);
     } else {
-      alert("通信エラーが発生しました。");
+      showError("通信エラーが発生しました。");
     }
     return;
   }
@@ -33,4 +33,15 @@ document.querySelector("#nextWordSendButton").onclick = async () => {
 function updatePreviousWord(previousWord) {
   const paragraph = document.querySelector("#previousWord");
   paragraph.textContent = `前の単語: ${previousWord}`;
+}
+
+const errorModal = document.querySelector("#errorModal");
+
+document.querySelector("#closeErrorModalButton").onclick = () => {
+  errorModal.close();
+};
+
+function showError(message) {
+  document.querySelector("#errorMessage").textContent = message;
+  errorModal.showModal();
 }
