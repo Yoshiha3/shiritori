@@ -8,9 +8,17 @@
   </head>
   <body>
     <h1>しりとり</h1>
-    <p id="previousWord"></p>
-    <input id="nextWordInput" type="text" />
-    <button id="nextWordSendButton">送信</button>
+
+    <div id="in-game">
+      <p id="previousWord"></p>
+      <input id="nextWordInput" type="text" />
+      <button id="nextWordSendButton">送信</button>
+    </div>
+
+    <div id="game-end">
+      <p>ゲーム終了!</p>
+    </div>
+
     <dialog id="errorModal">
       <p id="errorMessage"></p>
       <button id="closeErrorModalButton">閉じる</button>

@@ -17,7 +17,11 @@ document.querySelector("#nextWordSendButton").onclick = async () => {
     const { previousWord, gameEnd } = await post("/shiritori", {
       nextWord: nextWordInputText,
     });
-    if (gameEnd) console.log("Game End!!");
+    if (gameEnd) {
+      console.log("Game End!!");
+      showGameEnd();
+      return;
+    }
     updatePreviousWord(previousWord);
     nextWordInput.value = "";
   } catch (e) {
@@ -44,4 +48,9 @@ document.querySelector("#closeErrorModalButton").onclick = () => {
 function showError(message) {
   document.querySelector("#errorMessage").textContent = message;
   errorModal.showModal();
+}
+
+function showGameEnd() {
+  document.querySelector("#in-game").style.display = "none";
+  document.querySelector("#game-end").style.display = "block";
 }
