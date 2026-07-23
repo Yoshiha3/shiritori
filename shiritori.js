@@ -9,17 +9,17 @@ export default class Shiritori {
   }
 
   addNextWord(nextWord) {
-    if (this.getPreviousWord().slice(-1) === nextWord.slice(0, 1)) {
-      this.#wordHistory.push(nextWord);
-      return {
-        ok: true,
-        message: "",
-      };
-    } else {
+    if (this.getPreviousWord().slice(-1) != nextWord.slice(0, 1)) {
       return {
         ok: false,
         message: "前の単語に続いていません",
       };
     }
+
+    this.#wordHistory.push(nextWord);
+    return {
+      ok: true,
+      message: "",
+    };
   }
 }
