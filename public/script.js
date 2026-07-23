@@ -14,9 +14,10 @@ document.querySelector("#nextWordSendButton").onclick = async () => {
   const nextWordInput = document.querySelector("#nextWordInput");
   const nextWordInputText = nextWordInput.value;
   try {
-    const { previousWord } = await post("/shiritori", {
+    const { previousWord, gameEnd } = await post("/shiritori", {
       nextWord: nextWordInputText,
     });
+    if (gameEnd) console.log("Game End!!");
     updatePreviousWord(previousWord);
     nextWordInput.value = "";
   } catch (e) {

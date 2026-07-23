@@ -33,5 +33,5 @@ async function handleNewWord(req) {
   }
 
   const previousWord = game.getPreviousWord();
-  return Response.json({ previousWord });
+  return Response.json({ previousWord, gameEnd: result.gameEnd });
 }
