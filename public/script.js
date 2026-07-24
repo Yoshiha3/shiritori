@@ -19,7 +19,7 @@ document.querySelector("#nextWordSendButton").onclick = async () => {
     });
     if (gameEnd) {
       console.log("Game End!!");
-      showGameEnd();
+      showGameEnd(previousWord);
       return;
     }
     updatePreviousWord(previousWord);
@@ -50,7 +50,8 @@ function showError(message) {
   errorModal.showModal();
 }
 
-function showGameEnd() {
+function showGameEnd(lastWord) {
   document.querySelector("#in-game").style.display = "none";
   document.querySelector("#game-end").style.display = "block";
+  document.querySelector("#last-word").textContent = lastWord;
 }
