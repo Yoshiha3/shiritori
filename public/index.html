@@ -7,23 +7,29 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <h1>しりとり</h1>
+    <h1 class="title">しりとり</h1>
 
-    <div id="in-game">
-      <p id="previousWord"></p>
-      <input id="nextWordInput" type="text" />
-      <button id="nextWordSendButton">送信</button>
-    </div>
+    <main>
+      <div id="in-game">
+        <p id="previousWord"></p>
+        <div class="input">
+          <input id="nextWordInput" type="text"
+            placeholder="単語を入力してください" />
+          <button id="nextWordSendButton">送信</button>
+        </div>
+      </div>
 
-    <div id="game-end">
-      <p>ゲーム終了!</p>
-      <p>「<span id="last-word"></span>」が入力されました</p>
-    </div>
+      <div id="game-end">
+        <p>ゲーム終了!</p>
+        <p>「<span id="last-word"></span>」が入力されました</p>
+      </div>
 
-    <dialog id="errorModal">
-      <p id="errorMessage"></p>
-      <button id="closeErrorModalButton">閉じる</button>
-    </dialog>
+      <dialog id="errorModal">
+        <p id="errorMessage"></p>
+        <button id="closeErrorModalButton">閉じる</button>
+      </dialog>
+    </main>
+
     <script type="module" src="script.js"></script>
   </body>
 </html>
