@@ -37,6 +37,15 @@ export default class Shiritori {
       };
     }
 
+    if (this.#wordHistory.filter((word) => word === nextWord).length >= 2) {
+      this.#gameEnd = true;
+      return {
+        ok: true,
+        gameEnd: this.#gameEnd,
+        message: "",
+      };
+    }
+
     return {
       ok: true,
       gameEnd: this.#gameEnd,
