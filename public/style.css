@@ -32,3 +32,9 @@ main {
 #game-end {
   display: none;
 }
+
+#errorModal {
+  border-radius: 10px;
+  border-color: rgb(73, 183, 226);
+  background-color: skyblue;
+}
