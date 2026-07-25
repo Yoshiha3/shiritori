@@ -1,5 +1,3 @@
-import { error } from "node:console";
-
 export default class Shiritori {
   #wordHistory = [];
   #gameEnd = false;
@@ -31,6 +29,24 @@ export default class Shiritori {
     return matchedError ? matchedError.message : null;
   }
 
+  #checkGameEnd(nextWord) {
+    const endDefinitions = [
+      {
+        condition: (nextWord) => nextWord.slice(-1) === "ん",
+        message: "入力された単語の最後の文字が「ん」です",
+      },
+      {
+        condition: (nextWord) =>
+          this.#wordHistory.filter((word) => word === nextWord).length >= 2,
+        message: "過去に使用された単語が入力されました",
+      },
+    ];
+    const matchedEnd = endDefinitions.find((endDefinition) =>
+      endDefinition.condition(nextWord)
+    );
+    return matchedEnd ? matchedEnd.message : null;
+  }
+
   addNextWord(nextWord) {
     const errorMessage = this.#nextWordErrorCheck(nextWord);
     if (errorMessage) {
@@ -43,21 +59,14 @@ export default class Shiritori {
 
     this.#wordHistory.push(nextWord);
 
-    if (nextWord.slice(-1) === "ん") {
-      this.#gameEnd = true;
-      return {
-        ok: true,
-        gameEnd: this.#gameEnd,
-        message: "",
-      };
-    }
+    const endMessage = this.#checkGameEnd(nextWord);
 
-    if (this.#wordHistory.filter((word) => word === nextWord).length >= 2) {
+    if (endMessage) {
       this.#gameEnd = true;
       return {
         ok: true,
         gameEnd: this.#gameEnd,
-        message: "",
+        message: endMessage,
       };
     }
 
