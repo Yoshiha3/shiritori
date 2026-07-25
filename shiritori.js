@@ -1,3 +1,5 @@
+import { error } from "node:console";
+
 export default class Shiritori {
   #wordHistory = [];
   #gameEnd = false;
@@ -9,20 +11,33 @@ export default class Shiritori {
     return this.#wordHistory[this.#wordHistory.length - 1];
   }
 
-  addNextWord(nextWord) {
-    if (this.#gameEnd) {
-      return {
-        ok: false,
-        gameEnd: this.#gameEnd,
+  #nextWordErrorCheck(nextWord) {
+    const errorDefinitions = [
+      {
+        condition: (_) => this.#gameEnd,
         message: "ゲームは終了しています",
-      };
-    }
+      },
+      {
+        condition: (nextWord) =>
+          this.getPreviousWord().slice(-1) != nextWord.slice(0, 1),
+        message: "前の単語に続いていません",
+      },
+    ];
 
-    if (this.getPreviousWord().slice(-1) != nextWord.slice(0, 1)) {
+    const matchedError = errorDefinitions.find((errorDefinition) =>
+      errorDefinition.condition(nextWord)
+    );
+
+    return matchedError ? matchedError.message : null;
+  }
+
+  addNextWord(nextWord) {
+    const errorMessage = this.#nextWordErrorCheck(nextWord);
+    if (errorMessage) {
       return {
         ok: false,
         gameEnd: this.#gameEnd,
-        message: "前の単語に続いていません",
+        message: errorMessage,
       };
     }
 
