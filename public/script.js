@@ -55,3 +55,12 @@ function showGameEnd(lastWord) {
   document.querySelector("#game-end").style.display = "block";
   document.querySelector("#last-word").textContent = lastWord;
 }
+
+document.querySelector("#resetButton").onclick = async () => {
+  try {
+    await post("/reset");
+    // 画面の更新等
+  } catch(e) {
+    console.error(e.message);
+  }
+}
