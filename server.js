@@ -1,12 +1,13 @@
 import Router from "./router.js";
 import Shiritori from "./shiritori.js";
 
-const game = new Shiritori();
+let game = new Shiritori();
 
 const router = new Router();
 
 router.get("/shiritori", sendPreviousWord);
 router.post("/shiritori", handleNewWord);
+router.post("/reset", gameReset);
 
 Deno.serve((req) => router.handle(req));
 
@@ -34,4 +35,9 @@ async function handleNewWord(req) {
 
   const previousWord = game.getPreviousWord();
   return Response.json({ previousWord, gameEnd: result.gameEnd });
+}
+
+function gameReset() {
+  game = new Shiritori();
+  return Response.json({});
 }

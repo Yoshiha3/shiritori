@@ -56,11 +56,19 @@ function showGameEnd(lastWord) {
   document.querySelector("#last-word").textContent = lastWord;
 }
 
+function showGame() {
+  document.querySelector("#in-game").style.display = "block";
+  document.querySelector("#game-end").style.display = "none";
+}
+
 document.querySelector("#resetButton").onclick = async () => {
   try {
     await post("/reset");
-    // 画面の更新等
-  } catch(e) {
+    showGame();
+    const { previousWord } = await get("/shiritori");
+    updatePreviousWord(previousWord);
+    document.querySelector("#nextWordInput").value = "";
+  } catch (e) {
     console.error(e.message);
   }
-}
+};
