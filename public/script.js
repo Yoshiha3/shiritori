@@ -17,14 +17,10 @@ const lastWordOutput = document.querySelector("#last-word");
 
 const resetButton = document.querySelector("#reset-button");
 
-window.onload = async () => {
-  try {
-    const { previousWord } = await get("/shiritori");
-    updatePreviousWord(previousWord);
-  } catch (_e) {
-    showError("通信エラーが発生しました。");
-    return;
-  }
+window.onload = init;
+resetButton.onclick = async () => {
+  await resetGame();
+  await init();
 };
 
 nextWordSendButton.onclick = async () => {
@@ -50,6 +46,25 @@ nextWordSendButton.onclick = async () => {
   }
 };
 
+async function init() {
+  showGame();
+  nextWordInput.value = "";
+  try {
+    const { previousWord } = await get("/shiritori");
+    updatePreviousWord(previousWord);
+  } catch (_e) {
+    showError("通信エラーが発生しました。");
+  }
+}
+
+async function resetGame() {
+  try {
+    await post("/reset", {});
+  } catch (_e) {
+    showError("通信エラーが発生しました。");
+  }
+}
+
 function updatePreviousWord(previousWord) {
   previousWordOutput.textContent = `前の単語: ${previousWord}`;
 }
@@ -73,15 +88,3 @@ function showGame() {
   inGameDisplay.style.display = "block";
   gameEndDisplay.style.display = "none";
 }
-
-resetButton.onclick = async () => {
-  try {
-    await post("/reset");
-    showGame();
-    const { previousWord } = await get("/shiritori");
-    updatePreviousWord(previousWord);
-    nextWordInput.value = "";
-  } catch (e) {
-    console.error(e.message);
-  }
-};
