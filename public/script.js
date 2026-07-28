@@ -3,10 +3,10 @@ import UI from "./ui.js";
 
 const ui = new UI();
 
-window.onload = init;
+window.onload = initUI;
 ui.resetButton.onclick = async () => {
   await resetGame();
-  await init();
+  await initUI();
 };
 
 ui.nextWordSendButton.onclick = async () => {
@@ -38,7 +38,7 @@ function handleNetworkError(result) {
   return false;
 }
 
-async function init() {
+async function initUI() {
   ui.showGame();
   ui.clearNextWordInput();
 
