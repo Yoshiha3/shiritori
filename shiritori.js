@@ -20,6 +20,13 @@ export default class Shiritori {
           this.getPreviousWord().slice(-1) != nextWord.slice(0, 1),
         message: "前の単語に続いていません",
       },
+      {
+        condition: (nextWord) => {
+          const regex = /^[ぁ-んー]+$/u;
+          return !regex.test(nextWord);
+        },
+        message: "ひらがなでない文字が入力されています",
+      },
     ];
 
     const matchedError = errorDefinitions.find((errorDefinition) =>
