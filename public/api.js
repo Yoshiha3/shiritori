@@ -10,20 +10,20 @@ async function request(url, options = {}) {
   return data;
 }
 
-export class ApiError extends Error {
+class ApiError extends Error {
   constructor(status, message) {
     super(message);
     this.status = status;
   }
 }
 
-export function get(url) {
+function get(url) {
   return request(url, {
     method: "GET",
   });
 }
 
-export function post(url, body) {
+function post(url, body) {
   return request(url, {
     method: "POST",
     headers: {
@@ -31,4 +31,61 @@ export function post(url, body) {
     },
     body: JSON.stringify(body),
   });
+}
+
+export async function sendNextWord(nextWord) {
+  try {
+    const { previousWord, gameEnd } = await post("/shiritori", { nextWord });
+    return {
+      connectionOk: true,
+      ruleOk: true,
+      values: {
+        previousWord,
+        gameEnd,
+      },
+    };
+  } catch (e) {
+    if (e instanceof ApiError) {
+      return {
+        connectionOk: true,
+        ruleOk: false,
+        values: {
+          message: e.message,
+        },
+      };
+    } else {
+      return {
+        connectionOk: false,
+      };
+    }
+  }
+}
+
+export async function getPreviousWord() {
+  try {
+    const { previousWord } = await get("/shiritori");
+    return {
+      connectionOk: true,
+      values: {
+        previousWord,
+      },
+    };
+  } catch (_e) {
+    return {
+      connectionOk: false,
+    };
+  }
+}
+
+export async function sendResetRequest() {
+  try {
+    await post("/reset", {});
+    return {
+      connectionOk: true,
+    };
+  } catch (_e) {
+    return {
+      connectionOk: false,
+    };
+  }
 }

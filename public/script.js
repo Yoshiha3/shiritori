@@ -1,4 +1,4 @@
-import { ApiError, get, post } from "./api.js";
+import { getPreviousWord, sendNextWord, sendResetRequest } from "./api.js";
 import UI from "./ui.js";
 
 const ui = new UI();
@@ -33,50 +33,6 @@ ui.nextWordSendButton.onclick = async () => {
   ui.clearNextWordInput();
 };
 
-async function sendNextWord(nextWord) {
-  try {
-    const { previousWord, gameEnd } = await post("/shiritori", { nextWord });
-    return {
-      connectionOk: true,
-      ruleOk: true,
-      values: {
-        previousWord,
-        gameEnd,
-      },
-    };
-  } catch (e) {
-    if (e instanceof ApiError) {
-      return {
-        connectionOk: true,
-        ruleOk: false,
-        values: {
-          message: e.message,
-        },
-      };
-    } else {
-      return {
-        connectionOk: false,
-      };
-    }
-  }
-}
-
-async function getPreviousWord() {
-  try {
-    const { previousWord } = await get("/shiritori");
-    return {
-      connectionOk: true,
-      values: {
-        previousWord,
-      },
-    };
-  } catch (_e) {
-    return {
-      connectionOk: false,
-    };
-  }
-}
-
 async function init() {
   ui.showGame();
   ui.clearNextWordInput();
@@ -89,19 +45,6 @@ async function init() {
   }
 
   ui.updatePreviousWord(result.values.previousWord);
-}
-
-async function sendResetRequest() {
-  try {
-    await post("/reset", {});
-    return {
-      connectionOk: true,
-    };
-  } catch (_e) {
-    return {
-      connectionOk: false,
-    };
-  }
 }
 
 async function resetGame() {
