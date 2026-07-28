@@ -61,15 +61,34 @@ async function sendNextWord(nextWord) {
   }
 }
 
+async function getPreviousWord() {
+  try {
+    const { previousWord } = await get("/shiritori");
+    return {
+      connectionOk: true,
+      values: {
+        previousWord,
+      },
+    };
+  } catch (_e) {
+    return {
+      connectionOk: false,
+    };
+  }
+}
+
 async function init() {
   ui.showGame();
   ui.clearNextWordInput();
-  try {
-    const { previousWord } = await get("/shiritori");
-    ui.updatePreviousWord(previousWord);
-  } catch (_e) {
-    ui.showError("通信エラーが発生しました。");
+
+  const result = await getPreviousWord();
+
+  if (!result.connectionOk) {
+    ui.showError("通信エラーが発生しました");
+    return;
   }
+
+  ui.updatePreviousWord(result.values.previousWord);
 }
 
 async function resetGame() {
