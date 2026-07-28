@@ -1,3 +1,5 @@
+import { normalizeLastChar } from "./hiragana.js";
+
 export default class Shiritori {
   #wordHistory = [];
   #gameEnd = false;
@@ -16,8 +18,10 @@ export default class Shiritori {
         message: "ゲームは終了しています",
       },
       {
-        condition: (nextWord) =>
-          this.getPreviousWord().slice(-1) != nextWord.slice(0, 1),
+        condition: (nextWord) => {
+          const lastChar = normalizeLastChar(this.getPreviousWord());
+          return lastChar != nextWord.slice(0, 1);
+        },
         message: "前の単語に続いていません",
       },
       {
