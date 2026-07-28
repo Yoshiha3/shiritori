@@ -55,56 +55,30 @@ class Result {
 export async function sendNextWord(nextWord) {
   try {
     const { previousWord, gameEnd } = await post("/shiritori", { nextWord });
-    return {
-      connectionOk: true,
-      ruleOk: true,
-      values: {
-        previousWord,
-        gameEnd,
-      },
-    };
+    return Result.success({ previousWord, gameEnd });
   } catch (e) {
     if (e instanceof ApiError) {
-      return {
-        connectionOk: true,
-        ruleOk: false,
-        values: {
-          message: e.message,
-        },
-      };
-    } else {
-      return {
-        connectionOk: false,
-      };
+      return Result.ruleError(e.message);
     }
+
+    return Result.networkError();
   }
 }
 
 export async function getPreviousWord() {
   try {
     const { previousWord } = await get("/shiritori");
-    return {
-      connectionOk: true,
-      values: {
-        previousWord,
-      },
-    };
+    return Result.success({ previousWord });
   } catch (_e) {
-    return {
-      connectionOk: false,
-    };
+    return Result.networkError();
   }
 }
 
 export async function sendResetRequest() {
   try {
     await post("/reset", {});
-    return {
-      connectionOk: true,
-    };
+    return Result.success();
   } catch (_e) {
-    return {
-      connectionOk: false,
-    };
+    return Result.networkError();
   }
 }

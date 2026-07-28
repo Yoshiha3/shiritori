@@ -13,14 +13,15 @@ ui.nextWordSendButton.onclick = async () => {
   const nextWordInputText = ui.getNextWordInputValue();
   const result = await sendNextWord(nextWordInputText);
 
-  if (!result.connectionOk) {
-    ui.showError("通信エラーが発生しました");
-    return;
-  }
-
-  if (!result.ruleOk) {
-    ui.showError(result.values.message);
-    return;
+  switch (result.status) {
+    case "networkError":
+      ui.showError("通信エラーが発生しました");
+      return;
+    case "ruleError":
+      ui.showError(result.values.message);
+      return;
+    case "success":
+      break;
   }
 
   const { previousWord, gameEnd } = result.values;
@@ -39,9 +40,12 @@ async function init() {
 
   const result = await getPreviousWord();
 
-  if (!result.connectionOk) {
-    ui.showError("通信エラーが発生しました");
-    return;
+  switch (result.status) {
+    case "networkError":
+      ui.showError("通信エラーが発生しました");
+      return;
+    case "success":
+      break;
   }
 
   ui.updatePreviousWord(result.values.previousWord);
@@ -50,7 +54,11 @@ async function init() {
 async function resetGame() {
   const result = await sendResetRequest();
 
-  if (!result.connectionOk) {
-    ui.showError("通信エラーが発生しました");
+  switch (result.status) {
+    case "networkError":
+      ui.showError("通信エラーが発生しました");
+      return;
+    case "success":
+      break;
   }
 }
