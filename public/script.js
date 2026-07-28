@@ -91,10 +91,23 @@ async function init() {
   ui.updatePreviousWord(result.values.previousWord);
 }
 
-async function resetGame() {
+async function sendResetRequest() {
   try {
     await post("/reset", {});
+    return {
+      connectionOk: true,
+    };
   } catch (_e) {
-    ui.showError("通信エラーが発生しました。");
+    return {
+      connectionOk: false,
+    };
+  }
+}
+
+async function resetGame() {
+  const result = await sendResetRequest();
+
+  if (!result.connectionOk) {
+    ui.showError("通信エラーが発生しました");
   }
 }
