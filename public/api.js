@@ -54,8 +54,10 @@ class Result {
 
 export async function sendNextWord(nextWord) {
   try {
-    const { previousWord, gameEnd } = await post("/shiritori", { nextWord });
-    return Result.success({ previousWord, gameEnd });
+    const { previousWord, gameEnd, message } = await post("/shiritori", {
+      nextWord,
+    });
+    return Result.success({ previousWord, gameEnd, message });
   } catch (e) {
     if (e instanceof ApiError) {
       return Result.ruleError(e.message);

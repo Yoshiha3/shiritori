@@ -20,9 +20,9 @@ ui.nextWordSendButton.onclick = async () => {
     return;
   }
 
-  const { previousWord, gameEnd } = result.values;
+  const { previousWord, gameEnd, message } = result.values;
   if (gameEnd) {
-    ui.showGameEnd(previousWord);
+    ui.showGameEnd(previousWord, message);
     return;
   }
 

@@ -7,6 +7,7 @@ export default class UI {
   #inGameDisplay;
   #gameEndDisplay;
   #lastWordOutput;
+  #gameEndReasonOutput;
   constructor() {
     this.nextWordSendButton = document.querySelector("#next-word-send-button");
     this.#nextWordInput = document.querySelector("#next-word-input");
@@ -22,6 +23,7 @@ export default class UI {
     this.#inGameDisplay = document.querySelector("#in-game");
     this.#gameEndDisplay = document.querySelector("#game-end");
     this.#lastWordOutput = document.querySelector("#last-word");
+    this.#gameEndReasonOutput = document.querySelector("#game-end-reason");
 
     this.resetButton = document.querySelector("#reset-button");
 
@@ -47,10 +49,11 @@ export default class UI {
     this.#gameEndDisplay.style.display = "none";
   }
 
-  showGameEnd(lastWord) {
+  showGameEnd(lastWord, reason) {
     this.#inGameDisplay.style.display = "none";
     this.#gameEndDisplay.style.display = "block";
     this.#lastWordOutput.textContent = lastWord;
+    this.#gameEndReasonOutput.textContent = reason;
   }
 
   showError(message) {

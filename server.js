@@ -34,7 +34,11 @@ async function handleNewWord(req) {
   }
 
   const previousWord = game.getPreviousWord();
-  return Response.json({ previousWord, gameEnd: result.gameEnd });
+  return Response.json({
+    previousWord,
+    gameEnd: result.gameEnd,
+    message: result.message,
+  });
 }
 
 function gameReset() {
