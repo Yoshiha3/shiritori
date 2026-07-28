@@ -11,25 +11,55 @@ ui.resetButton.onclick = async () => {
 
 ui.nextWordSendButton.onclick = async () => {
   const nextWordInputText = ui.getNextWordInputValue();
+  const result = await sendNextWord(nextWordInputText);
+
+  if (!result.connectionOk) {
+    ui.showError("通信エラーが発生しました");
+    return;
+  }
+
+  if (!result.ruleOk) {
+    ui.showError(result.values.message);
+    return;
+  }
+
+  const { previousWord, gameEnd } = result.values;
+  if (gameEnd) {
+    ui.showGameEnd(previousWord);
+    return;
+  }
+
+  ui.updatePreviousWord(previousWord);
+  ui.clearNextWordInput();
+};
+
+async function sendNextWord(nextWord) {
   try {
-    const { previousWord, gameEnd } = await post("/shiritori", {
-      nextWord: nextWordInputText,
-    });
-    if (gameEnd) {
-      console.log("Game End!!");
-      ui.showGameEnd(previousWord);
-      return;
-    }
-    ui.updatePreviousWord(previousWord);
-    ui.clearNextWordInput();
+    const { previousWord, gameEnd } = await post("/shiritori", { nextWord });
+    return {
+      connectionOk: true,
+      ruleOk: true,
+      values: {
+        previousWord,
+        gameEnd,
+      },
+    };
   } catch (e) {
     if (e instanceof ApiError) {
-      ui.showError(e.message);
+      return {
+        connectionOk: true,
+        ruleOk: false,
+        values: {
+          message: e.message,
+        },
+      };
     } else {
-      ui.showError("通信エラーが発生しました。");
+      return {
+        connectionOk: false,
+      };
     }
   }
-};
+}
 
 async function init() {
   ui.showGame();
