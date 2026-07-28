@@ -33,6 +33,25 @@ function post(url, body) {
   });
 }
 
+class Result {
+  constructor(status, values = {}) {
+    this.status = status;
+    this.values = values;
+  }
+
+  static success(values) {
+    return new Result("success", values);
+  }
+
+  static ruleError(message) {
+    return new Result("ruleError", { message });
+  }
+
+  static networkError() {
+    return new Result("networkError");
+  }
+}
+
 export async function sendNextWord(nextWord) {
   try {
     const { previousWord, gameEnd } = await post("/shiritori", { nextWord });
