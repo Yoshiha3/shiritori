@@ -9,7 +9,8 @@ ui.resetButton.onclick = async () => {
   await initUI();
 };
 
-ui.nextWordSendButton.onclick = async () => {
+ui.inputForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
   const nextWordInputText = ui.getNextWordInputValue();
   const result = await sendNextWord(nextWordInputText);
 
@@ -28,7 +29,7 @@ ui.nextWordSendButton.onclick = async () => {
 
   ui.updatePreviousWord(previousWord);
   ui.clearNextWordInput();
-};
+});
 
 function handleNetworkError(result) {
   if (result.status === "networkError") {
