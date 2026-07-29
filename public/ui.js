@@ -10,7 +10,6 @@ export default class UI {
   #gameEndReasonOutput;
   constructor() {
     this.inputForm = document.querySelector("#input-form");
-    this.nextWordSendButton = document.querySelector("#next-word-send-button");
     this.#nextWordInput = document.querySelector("#next-word-input");
 
     this.#previousWordOutput = document.querySelector("#previous-word");
